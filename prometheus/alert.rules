@@ -18,3 +18,34 @@ groups:
     annotations:
       summary: "Instance {{ $labels.instance }} under high load"
       description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
+
+  - alert: HttpStatusCode
+    expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+    for: 30s
+    labels:
+      severity: error
+    annotations:
+      summary: "HTTP Status Code (instance {{ $labels.instance }})"
+      description: "HTTP status code is not 200-399\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+
+  - alert: SlowProbe
+    expr: avg_over_time(probe_http_duration_seconds[1m]) > 5
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "Slow probe (instance {{ $labels.instance }})"
+      description: "Blackbox probe took more than 5s to complete\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: probeSuccess
+    expr: probe_success == 0
+    for: 60s
+    labels:
+      severity: critical
+    annotations:
+      summary: "ssh down (instance {{ $labels.instance }})"
+      description: "Blackbox probe ssh down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+
+
