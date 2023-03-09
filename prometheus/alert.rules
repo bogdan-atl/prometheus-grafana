@@ -1,4 +1,4 @@
-groups: 
+groups:
 - name: example
   rules:
   - alert: PrometheusTargetMissing
@@ -44,8 +44,16 @@ groups:
     labels:
       severity: critical
     annotations:
-      summary: "ssh down (instance {{ $labels.instance }})"
-      description: "Blackbox probe ssh down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+      summary: "Port (instance {{ $labels.instance }})"
+      description: "Blackbox probe port  down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
 
 
-
+  - alert: NoResponseFromIP-RDP-GUARD
+    expr: probe_success{instance="94.255.83.207:600", job="rdp-guard"} == 0
+      and time() - probe_success{instance="94.255.83.207:600", job="rdp-guard"} > 120
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "No response from IP {{ $labels.instance }} RDP-GUARD!!! for 2 minutes"
+      description: "Blackbox probe could not get a response from IP {{ $labels.instance }} for more than 2 minutes."
