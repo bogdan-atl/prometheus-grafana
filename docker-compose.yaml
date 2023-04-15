@@ -72,6 +72,8 @@ services:
       - "3100:3100"
     restart: always
     command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./logs:/loki/chunks
 
   promtail:
     image: grafana/promtail:2.3.0
