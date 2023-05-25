@@ -10,9 +10,22 @@ alerting:
 
 scrape_configs:
   - job_name: node
-    scrape_interval: 5s
+    scrape_interval: 5m
     static_configs:
     - targets: ['node-exporter:9100']
+
+
+  - job_name: 'zabbix'
+    scheme: https
+    static_configs:
+      - targets:
+        - # ip
+    basic_auth:
+      username: # user
+      password: # pass
+    tls_config:
+      insecure_skip_verify: true
+
 
   - job_name: blackbox
     metrics_path: /probe
@@ -36,8 +49,8 @@ scrape_configs:
       module: [ssh_prober]
     static_configs:
       - targets:
-        - 94.255.83.207:221
-        - 94.255.83.207:22
+        - ip:221
+        - ip:22
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -53,7 +66,7 @@ scrape_configs:
       module: [tcp_connect]
     static_configs:
       - targets:
-        - 94.255.83.207:4881
+        - ip:4881
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -69,7 +82,7 @@ scrape_configs:
       module: [tcp_connect]
     static_configs:
       - targets:
-        - 94.255.83.207:600
+        - ip:600
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

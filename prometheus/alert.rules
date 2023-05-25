@@ -1,6 +1,7 @@
 groups:
 - name: example
   rules:
+   
   - alert: PrometheusTargetMissing
     expr: up == 0
     for: 0m
@@ -11,8 +12,8 @@ groups:
       description: "A Prometheus target has disappeared. An exporter might be crashed. VALUE = {{ $value }}  LABELS: {{ $labels }}"
 
   - alert: high_load
-    expr: node_load1 > 0.8
-    for: 30s
+    expr: node_load15 > 2.0
+    for: 5m
     labels:
       severity: warning
     annotations:

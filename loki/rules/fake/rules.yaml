@@ -1,0 +1,29 @@
+groups:
+- name: MIKROTIK
+  rules:
+  - alert: disconnected
+    expr: |
+      count_over_time({job="varlogs"} |= "disconnected" [1m]) > 0
+    for: 15m
+    labels:
+      severity: critical
+    annotations:
+      summary: Log entry with mention of "disconnected" detected
+
+  - alert: RADIUS
+    expr: |
+      count_over_time({job="varlogs"} |= "RADIUS" [10m]) > 3
+    for: 20m
+    labels:
+      severity: critical
+    annotations:
+      summary: RADIUS server was a problem
+
+  - alert: CRITICAL
+    expr: |
+      count_over_time({job="varlogs"} |= "critical" [1m]) > 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: CRITICAL PROBLEM IN MIKROTIK

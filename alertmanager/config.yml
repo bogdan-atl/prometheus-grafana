@@ -1,8 +1,11 @@
 route:
-    receiver: 'alertmanager-bot'
+  group_by: ['alertname']
+  group_wait: 0s
+  receiver: 'alertmanager-bot'
 
 receivers:
 - name: 'alertmanager-bot'
   webhook_configs:
   - send_resolved: true
     url: 'http://alertmanager-bot:8080'
+
