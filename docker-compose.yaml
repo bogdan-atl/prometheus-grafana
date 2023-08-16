@@ -1,9 +1,8 @@
-
 version: '3.2'
 
 services:
   prometheus:
-    image: prom/prometheus:v2.37.6
+    image: prom/prometheus:${PROMETHEUS}
     env_file:
       - .env
     volumes:
@@ -75,7 +74,7 @@ services:
     command: --config.file=/config/blackbox.yml
 
   loki:
-    image: grafana/loki:2.7.4
+    image: grafana/loki:${LOKI}
     user: root
     ports:
       - "3100:3100"
@@ -87,7 +86,7 @@ services:
       - ./loki/local-config.yaml:/etc/loki/local-config.yaml
 
   promtail:
-    image: grafana/promtail:2.7.4
+    image: grafana/promtail:${PROMTAIL}
     volumes:
       - /var/ROS:/var/log
     restart: always
@@ -95,11 +94,12 @@ services:
 
 
   grafana:
-    image: grafana/grafana:9.4.7
+    image: grafana/grafana:${GRAFANA}
     user: root
     depends_on:
       - prometheus
     ports:
+      - ${HOST}:3000:3000
       - 127.0.0.1:3000:3000
     volumes:
       - ./grafana:/var/lib/grafana
