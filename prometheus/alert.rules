@@ -1,5 +1,5 @@
 groups:
-- name: example
+- name: monitoring
   rules:
    
   - alert: PrometheusTargetMissing
